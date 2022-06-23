@@ -22,11 +22,11 @@ import static ru.javaops.restaurant_voting.util.validation.ValidationUtil.assure
 import static ru.javaops.restaurant_voting.util.validation.ValidationUtil.checkNew;
 
 @RestController
-@RequestMapping(value = ProfileController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = RegularUserController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
 // TODO: cache only most requested data!
 @CacheConfig(cacheNames = "users")
-public class ProfileController extends AbstractUserController {
+public class RegularUserController extends BaseUserController {
     static final String REST_URL = "/api/profile";
 
     @GetMapping

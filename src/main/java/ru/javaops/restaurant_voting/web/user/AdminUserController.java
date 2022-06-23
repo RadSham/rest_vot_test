@@ -25,14 +25,14 @@ import static ru.javaops.restaurant_voting.util.validation.ValidationUtil.checkN
 @Slf4j
 // TODO: cache only most requested data!
 @CacheConfig(cacheNames = "users")
-public class AdminUserController extends AbstractUserController {
+public class AdminUserController extends BaseUserController {
 
     static final String REST_URL = "/api/admin/users";
 
-    @Override
     @GetMapping("/{id}")
     public ResponseEntity<User> get(@PathVariable int id) {
-        return super.get(id);
+        log.info("get {}", id);
+        return ResponseEntity.of(repository.findById(id));
     }
 
     @Override
