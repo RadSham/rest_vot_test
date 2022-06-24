@@ -18,7 +18,6 @@ import java.util.List;
 public class RegularRestaurantController extends BaseRestaurantController {
     static final String REST_URL = "/api/restaurants";
 
-    @Override
     @GetMapping
     public List<Restaurant> getAll() {
         log.info("getAll");

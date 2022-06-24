@@ -6,6 +6,7 @@ INSERT INTO USER_ROLES (role, user_id)
 VALUES ('USER', 1),
        ('ADMIN', 2),
        ('USER', 2);
+
 INSERT INTO restaurant (name)
 VALUES ('Noma'),
        ('Mirazur'),
@@ -48,6 +49,6 @@ INSERT INTO vote (date, user_id, restaurant_id)
 VALUES (CURDATE(), 1, 2),
        (DATEADD('DAY', -1, CURDATE()), 1, 3),
        (DATEADD('DAY', -2, CURDATE()), 1, 1),
-       (CURDATE(), 2, 2),
+       (CURDATE(), 2, 3),
        (DATEADD('DAY', -1, CURDATE()), 2, 1),
        (DATEADD('DAY', -2, CURDATE()), 2, 2);

@@ -74,8 +74,7 @@ class RegularUserControllerTest extends AbstractControllerTest {
                 .content(JsonUtil.writeValue(updatedTo)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
-
-        USER_MATCHER.assertMatch(userRepository.getById(USER_ID), UserUtil.updateFromTo(new User(user), updatedTo));
+        USER_MATCHER.assertMatch(userRepository.getById(USER_ID), UserUtil.updateFromTo(userRepository.getById(USER_ID), updatedTo));
     }
 
     @Test
