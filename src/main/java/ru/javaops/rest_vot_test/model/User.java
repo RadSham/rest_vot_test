@@ -1,5 +1,6 @@
 package ru.javaops.rest_vot_test.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
@@ -63,6 +64,7 @@ public class User extends NamedEntity implements HasIdAndEmail, Serializable {
     //@OrderBy("date DESC")
     //@JsonManagedReference
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
     private List<Vote> votes;
 
     public User(User u) {

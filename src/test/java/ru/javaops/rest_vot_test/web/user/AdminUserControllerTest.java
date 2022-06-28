@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.javaops.rest_vot_test.model.Role;
 import ru.javaops.rest_vot_test.model.User;
 import ru.javaops.rest_vot_test.repository.UserRepository;
-import ru.javaops.rest_vot_test.web.AbstractControllerTest;
+import ru.javaops.rest_vot_test.web.BaseControllerTest;
 import ru.javaops.rest_vot_test.web.GlobalExceptionHandler;
 
 import static org.hamcrest.Matchers.containsString;
@@ -19,9 +19,10 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.javaops.rest_vot_test.web.user.UserTestData.*;
+import static ru.javaops.rest_vot_test.web.TestData.ForUser.*;
+import static ru.javaops.rest_vot_test.web.TestData.NOT_FOUND_ID;
 
-class AdminUserControllerTest extends AbstractControllerTest {
+class AdminUserControllerTest extends BaseControllerTest {
 
     private static final String REST_URL = AdminUserController.REST_URL + '/';
 
@@ -42,7 +43,7 @@ class AdminUserControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void getNotFound() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + NOT_FOUND))
+        perform(MockMvcRequestBuilders.get(REST_URL + NOT_FOUND_ID))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
@@ -68,7 +69,7 @@ class AdminUserControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void deleteNotFound() throws Exception {
-        perform(MockMvcRequestBuilders.delete(REST_URL + NOT_FOUND))
+        perform(MockMvcRequestBuilders.delete(REST_URL + NOT_FOUND_ID))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
     }
@@ -76,7 +77,7 @@ class AdminUserControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void enableNotFound() throws Exception {
-        perform(MockMvcRequestBuilders.patch(REST_URL + NOT_FOUND)
+        perform(MockMvcRequestBuilders.patch(REST_URL + NOT_FOUND_ID)
                 .param("enabled", "false")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())

@@ -11,17 +11,17 @@ import ru.javaops.rest_vot_test.repository.UserRepository;
 import ru.javaops.rest_vot_test.to.UserTo;
 import ru.javaops.rest_vot_test.util.JsonUtil;
 import ru.javaops.rest_vot_test.util.UserUtil;
-import ru.javaops.rest_vot_test.web.AbstractControllerTest;
+import ru.javaops.rest_vot_test.web.BaseControllerTest;
 import ru.javaops.rest_vot_test.web.GlobalExceptionHandler;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static ru.javaops.rest_vot_test.web.TestData.ForUser.*;
 import static ru.javaops.rest_vot_test.web.user.RegularUserController.REST_URL;
-import static ru.javaops.rest_vot_test.web.user.UserTestData.*;
 
-class RegularUserControllerTest extends AbstractControllerTest {
+class RegularUserControllerTest extends BaseControllerTest {
 
     @Autowired
     private UserRepository userRepository;

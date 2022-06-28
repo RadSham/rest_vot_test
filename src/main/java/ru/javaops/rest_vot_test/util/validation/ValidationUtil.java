@@ -6,6 +6,8 @@ import org.springframework.lang.NonNull;
 import ru.javaops.rest_vot_test.HasId;
 import ru.javaops.rest_vot_test.error.IllegalRequestDataException;
 
+import java.time.LocalDate;
+
 @UtilityClass
 public class ValidationUtil {
 
@@ -36,4 +38,11 @@ public class ValidationUtil {
         Throwable rootCause = NestedExceptionUtils.getRootCause(t);
         return rootCause != null ? rootCause : t;
     }
+
+    public static void checkDate(LocalDate expected, LocalDate actual) {
+        if (!expected.isEqual(actual)) {
+            throw new IllegalRequestDataException("Expected date " + expected + " but was " + actual);
+        }
+    }
+
 }
