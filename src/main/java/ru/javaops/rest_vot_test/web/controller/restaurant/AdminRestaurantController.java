@@ -6,7 +6,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import ru.javaops.rest_vot_test.model.Menu;
 import ru.javaops.rest_vot_test.model.Restaurant;
+import ru.javaops.rest_vot_test.repository.MenuRepository;
 
 import javax.validation.Valid;
 
@@ -20,6 +22,12 @@ import static ru.javaops.rest_vot_test.util.validation.ValidationUtil.checkNew;
 @Slf4j
 public class AdminRestaurantController extends BaseRestaurantController {
     public static final String REST_URL = "/api/admin/restaurants";
+
+    private final MenuRepository menuRepository;
+
+    public AdminRestaurantController(MenuRepository menuRepository) {
+        this.menuRepository = menuRepository;
+    }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Restaurant> createWithLocation(@Valid @RequestBody Restaurant restaurant) {
@@ -44,6 +52,8 @@ public class AdminRestaurantController extends BaseRestaurantController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int id) {
         log.info("delete {}", id);
+        menuRepository.getByRestaurantId(id).forEach(Menu::clearDishes);
+        menuRepository.flush();
         repository.deleteExisted(id);
     }
 

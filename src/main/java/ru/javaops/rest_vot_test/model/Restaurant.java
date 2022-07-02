@@ -10,6 +10,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "restaurant")
@@ -17,7 +18,7 @@ import java.util.List;
 @Setter
 public class Restaurant extends NamedEntity{
 
-    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "restaurant")
     //@OrderBy("date DESC")
     //@JsonManagedReference
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -25,11 +26,10 @@ public class Restaurant extends NamedEntity{
     private List<Menu> menus;
 
     @OneToMany(mappedBy = "restaurant")
-    //@OrderBy("name DESC")
-    //@JsonManagedReference
+    @OrderBy("name DESC")
+    @JsonManagedReference
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
-    private List<Dish> dishes;
+    private Set<Dish> dishes;
 
     @OneToMany(mappedBy = "restaurant")
     //@OrderBy("date DESC")
@@ -42,6 +42,19 @@ public class Restaurant extends NamedEntity{
     }
 
     public Restaurant(Integer id, String name) {
+        this(id, name, null);
+    }
+
+    public Restaurant(Integer id, String name, Set<Dish> dishes) {
         super(id, name);
+        this.dishes = dishes;
+    }
+
+    public Set<Dish> getDishes() {
+        return dishes;
+    }
+
+    public void setDishes(Set<Dish> dishes) {
+        this.dishes = dishes;
     }
 }

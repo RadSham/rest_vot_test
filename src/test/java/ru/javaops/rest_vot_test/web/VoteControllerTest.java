@@ -22,11 +22,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.javaops.rest_vot_test.web.TestData.ForRestaurant.restaurantMirazur;
-import static ru.javaops.rest_vot_test.web.TestData.ForRestaurant.restaurantNoma;
-import static ru.javaops.rest_vot_test.web.TestData.ForUser.*;
-import static ru.javaops.rest_vot_test.web.TestData.ForVote.*;
-import static ru.javaops.rest_vot_test.web.TestData.NOT_FOUND_ID;
+import static ru.javaops.rest_vot_test.web.testdata.CommonTD.NOT_FOUND_ID;
+import static ru.javaops.rest_vot_test.web.testdata.RestaurantTD.restaurantMirazur;
+import static ru.javaops.rest_vot_test.web.testdata.RestaurantTD.restaurantNoma;
+import static ru.javaops.rest_vot_test.web.testdata.UserTD.*;
+import static ru.javaops.rest_vot_test.web.testdata.VoteTD.*;
 
 class VoteControllerTest extends BaseControllerTest {
     private static final String REST_URL = VoteController.REST_URL + '/';

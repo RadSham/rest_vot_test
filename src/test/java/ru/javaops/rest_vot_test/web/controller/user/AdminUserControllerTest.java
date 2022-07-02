@@ -20,8 +20,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.javaops.rest_vot_test.web.TestData.ForUser.*;
-import static ru.javaops.rest_vot_test.web.TestData.NOT_FOUND_ID;
+import static ru.javaops.rest_vot_test.web.testdata.CommonTD.NOT_FOUND_ID;
+import static ru.javaops.rest_vot_test.web.testdata.UserTD.*;
 
 class AdminUserControllerTest extends BaseControllerTest {
 
