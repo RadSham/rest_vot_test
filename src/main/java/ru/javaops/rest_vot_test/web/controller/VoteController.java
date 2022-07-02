@@ -22,7 +22,7 @@ import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
 
-import static ru.javaops.rest_vot_test.service.VoteService.getClock;
+import static ru.javaops.rest_vot_test.util.DateTimeUtil.getClock;
 import static ru.javaops.rest_vot_test.util.validation.ValidationUtil.*;
 
 @RestController

@@ -61,8 +61,6 @@ public class User extends NamedEntity implements HasIdAndEmail, Serializable {
     private Set<Role> roles;
 
     @OneToMany(mappedBy = "user")
-    //@OrderBy("date DESC")
-    //@JsonManagedReference
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private List<Vote> votes;

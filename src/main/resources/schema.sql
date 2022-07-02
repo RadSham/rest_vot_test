@@ -51,7 +51,7 @@ CREATE TABLE MENU
     FOREIGN KEY (restaurant_id) REFERENCES restaurant (id) ON DELETE CASCADE
 );
 
-CREATE TABLE MENU_DISHES
+CREATE TABLE MENU_DISH
 (
     menu_id          INTEGER                 NOT NULL,
     dish_id          INTEGER                 NOT NULL,

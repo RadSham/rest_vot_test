@@ -25,7 +25,6 @@ public class RegularRestaurantController extends BaseRestaurantController {
     }
 
     @GetMapping("/with-dishes")
-    //@Cacheable -upd
     public List<Restaurant> getAllWithDishes() {
         log.info("getAllWithDishes");
         return repository.getAllWithDishes();

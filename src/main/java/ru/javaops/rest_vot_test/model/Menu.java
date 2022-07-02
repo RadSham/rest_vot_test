@@ -25,7 +25,7 @@ public class Menu extends NamedEntity{
     @NonNull
     private LocalDate date;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "restaurant_id", nullable = false)
     //@JsonBackReference
     private Restaurant restaurant;

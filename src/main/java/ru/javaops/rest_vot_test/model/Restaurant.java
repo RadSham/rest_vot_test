@@ -19,10 +19,8 @@ import java.util.Set;
 public class Restaurant extends NamedEntity{
 
     @OneToMany(mappedBy = "restaurant")
-    //@OrderBy("date DESC")
-    //@JsonManagedReference
+    @OrderBy("date DESC")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
     private List<Menu> menus;
 
     @OneToMany(mappedBy = "restaurant")
@@ -32,8 +30,6 @@ public class Restaurant extends NamedEntity{
     private Set<Dish> dishes;
 
     @OneToMany(mappedBy = "restaurant")
-    //@OrderBy("date DESC")
-    //@JsonManagedReference
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private List<Vote> votes;

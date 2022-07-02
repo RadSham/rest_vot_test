@@ -12,14 +12,13 @@ import java.time.LocalTime;
 
 @Service
 public class VoteService {
-    private static Clock clock;
+
     private final VoteRepository voteRepository;
     private final UserRepository userRepository;
 
     public VoteService(VoteRepository voteRepository, UserRepository userRepository) {
         this.voteRepository = voteRepository;
         this.userRepository = userRepository;
-        resetClock();
     }
 
     public Vote save(Vote vote, int userId) {
@@ -31,18 +30,5 @@ public class VoteService {
         return voteRepository.getByIdAndUser(id, userId).orElseThrow(
                 () -> new IllegalArgumentException("Vote id=" + id + " doesn't belong to User id=" + userId));
     }
-
-    public static Clock getClock() {
-        return clock;
-    }
-
-    public static void setClock(Clock clock) {
-        VoteService.clock = clock;
-    }
-
-    public static void resetClock() {
-        setClock(Clock.systemDefaultZone());
-    }
-
 
 }
