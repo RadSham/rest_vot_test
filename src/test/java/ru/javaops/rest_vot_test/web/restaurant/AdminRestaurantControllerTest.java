@@ -10,7 +10,6 @@ import ru.javaops.rest_vot_test.model.Restaurant;
 import ru.javaops.rest_vot_test.repository.RestaurantRepository;
 import ru.javaops.rest_vot_test.util.JsonUtil;
 import ru.javaops.rest_vot_test.web.BaseControllerTest;
-import ru.javaops.rest_vot_test.web.MatcherFactory;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -18,6 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static ru.javaops.rest_vot_test.web.TestData.EXIST_ID;
 import static ru.javaops.rest_vot_test.web.TestData.ForRestaurant.RESTAURANT_MATCHER;
 import static ru.javaops.rest_vot_test.web.TestData.ForUser.ADMIN_MAIL;
+import static ru.javaops.rest_vot_test.web.TestData.ForUser.USER_MAIL;
 import static ru.javaops.rest_vot_test.web.TestData.NOT_FOUND_ID;
 
 class AdminRestaurantControllerTest extends BaseControllerTest {
@@ -25,6 +25,13 @@ class AdminRestaurantControllerTest extends BaseControllerTest {
 
     @Autowired
     protected RestaurantRepository repository;
+
+    @Test
+    @WithUserDetails(value = USER_MAIL)
+    void getForbidden() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL))
+                .andExpect(status().isForbidden());
+    }
 
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
