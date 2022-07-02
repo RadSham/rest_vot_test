@@ -15,6 +15,7 @@ import java.time.LocalDate;
 
 import static ru.javaops.rest_vot_test.util.DateTimeUtil.currentDate;
 import static ru.javaops.rest_vot_test.util.DateTimeUtil.getClock;
+import static ru.javaops.rest_vot_test.util.ErrorUtil.notFound;
 
 public abstract class BaseMenuController {
     protected final Logger log = LoggerFactory.getLogger(getClass());
@@ -22,13 +23,13 @@ public abstract class BaseMenuController {
     @Autowired
     protected MenuRepository repository;
     @Autowired
-    protected RestaurantRepository restaurantRepo;
+    protected RestaurantRepository restaurantRepository;
     @Autowired
     protected DishService dishService;
 
     protected Menu fromTo(MenuTo to) {
-        Restaurant restaurant = restaurantRepo.findById(to.getRestaurantId())
-                .orElseThrow(() -> new NotFoundException("Not found Restaurant with id=" + to.getRestaurantId()));
+        Restaurant restaurant = restaurantRepository.findById(to.getRestaurantId())
+                .orElseThrow(notFound(Restaurant.class, to.getRestaurantId()));
         if (to.getRegistered() == null) {
             to.setRegistered(currentDate());
         }
@@ -37,6 +38,6 @@ public abstract class BaseMenuController {
     }
 
     protected Menu getByIdLoad(int id) {
-        return repository.getByIdLoad(id).orElseThrow(() -> new NotFoundException("Not found Menu with id=" + id));
+        return repository.getByIdLoad(id).orElseThrow(notFound(Menu.class, id));
     }
 }
