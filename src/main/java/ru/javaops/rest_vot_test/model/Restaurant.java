@@ -19,9 +19,8 @@ import java.util.Set;
 public class Restaurant extends NamedEntity{
 
     @OneToMany(mappedBy = "restaurant")
-    @OrderBy("date DESC")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private List<Menu> menus;
+    private List<Menu> menu;
 
     @OneToMany(mappedBy = "restaurant")
     @OrderBy("name DESC")

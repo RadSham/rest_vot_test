@@ -15,11 +15,11 @@ import ru.javaops.rest_vot_test.web.controller.restaurant.AdminRestaurantControl
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.javaops.rest_vot_test.web.TestData.EXIST_ID;
-import static ru.javaops.rest_vot_test.web.TestData.ForRestaurant.RESTAURANT_MATCHER;
-import static ru.javaops.rest_vot_test.web.TestData.ForUser.ADMIN_MAIL;
-import static ru.javaops.rest_vot_test.web.TestData.ForUser.USER_MAIL;
-import static ru.javaops.rest_vot_test.web.TestData.NOT_FOUND_ID;
+import static ru.javaops.rest_vot_test.web.testdata.CommonTD.EXIST_ID;
+import static ru.javaops.rest_vot_test.web.testdata.CommonTD.NOT_FOUND_ID;
+import static ru.javaops.rest_vot_test.web.testdata.RestaurantTD.RESTAURANT_MATCHER;
+import static ru.javaops.rest_vot_test.web.testdata.UserTD.ADMIN_MAIL;
+import static ru.javaops.rest_vot_test.web.testdata.UserTD.USER_MAIL;
 
 class AdminRestaurantControllerTest extends BaseControllerTest {
     static final String REST_URL = AdminRestaurantController.REST_URL + '/';

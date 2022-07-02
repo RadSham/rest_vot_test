@@ -21,9 +21,9 @@ import java.util.Set;
 @Getter
 public class Menu extends NamedEntity{
 
-    @Column(name = "date", nullable = false)
+    @Column(name = "registered", nullable = false)
     @NonNull
-    private LocalDate date;
+    private LocalDate registered;
 
     @ManyToOne
     @JoinColumn(name = "restaurant_id", nullable = false)
@@ -40,18 +40,18 @@ public class Menu extends NamedEntity{
     public Menu() {
     }
 
-    public Menu(String name, LocalDate date, Restaurant restaurant) {
-        this(null, name, date, restaurant, null);
+    public Menu(String name, LocalDate registered, Restaurant restaurant) {
+        this(null, name, registered, restaurant, null);
     }
 
-    public Menu(String name, LocalDate date, Restaurant restaurant, Dish... dishes) {
-        this(null, name, date, restaurant, Arrays.asList(dishes));
+    public Menu(String name, LocalDate registered, Restaurant restaurant, Dish... dishes) {
+        this(null, name, registered, restaurant, Arrays.asList(dishes));
 
     }
 
-    public Menu(Integer id, String name, LocalDate date, Restaurant restaurant, Collection<Dish> dishes) {
+    public Menu(Integer id, String name, LocalDate registered, Restaurant restaurant, Collection<Dish> dishes) {
         super(id, name);
-        this.date = date;
+        this.registered = registered;
         this.restaurant = restaurant;
         setDishes(dishes);
     }
@@ -74,5 +74,13 @@ public class Menu extends NamedEntity{
 
     public void clearDishes() {
         dishes.clear();
+    }
+
+    public LocalDate getRegistered() {
+        return registered;
+    }
+
+    public void setRegistered(LocalDate registered) {
+        this.registered = registered;
     }
 }

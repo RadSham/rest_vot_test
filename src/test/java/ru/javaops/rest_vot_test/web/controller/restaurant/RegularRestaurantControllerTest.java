@@ -5,14 +5,13 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.javaops.rest_vot_test.web.BaseControllerTest;
-import ru.javaops.rest_vot_test.web.controller.restaurant.RegularRestaurantController;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.javaops.rest_vot_test.web.TestData.ForRestaurant.*;
-import static ru.javaops.rest_vot_test.web.TestData.ForUser.USER_MAIL;
-import static ru.javaops.rest_vot_test.web.TestData.NOT_FOUND_ID;
+import static ru.javaops.rest_vot_test.web.testdata.CommonTD.NOT_FOUND_ID;
+import static ru.javaops.rest_vot_test.web.testdata.RestaurantTD.*;
+import static ru.javaops.rest_vot_test.web.testdata.UserTD.USER_MAIL;
 
 public class RegularRestaurantControllerTest extends BaseControllerTest {
     static final String REST_URL = RegularRestaurantController.REST_URL + "/";
