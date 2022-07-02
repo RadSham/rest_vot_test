@@ -10,10 +10,8 @@ import javax.validation.constraints.Positive;
 @Getter
 @Setter
 @Entity
-@Table(name = "dish", uniqueConstraints = {@UniqueConstraint(columnNames = {"id", "restaurant_id"}, name = "dish_restaurant_idx"),
-    //@UniqueConstraint(columnNames = {"id", "menu_id"}, name = "dish_menu_idx")
-        })
-public class Dish extends NamedEntity{
+@Table(name = "dish", uniqueConstraints = {@UniqueConstraint(columnNames = {"id", "restaurant_id"}, name = "dish_restaurant_idx")})
+public class Dish extends NamedEntity {
     @Column(name = "price", nullable = false)
     @Positive
     private double price;
@@ -23,9 +21,7 @@ public class Dish extends NamedEntity{
     @JsonBackReference
     private Restaurant restaurant;
 
-    /*@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "menu_id")
-    private Menu menu;*/
+
 
     public Dish() {
     }
@@ -35,9 +31,7 @@ public class Dish extends NamedEntity{
     }
 
 
-    public Dish(String name, double price) {
-        this(null, name, price, null);
-    }
+
 
     public Dish(Integer id, String name, double price, Restaurant restaurant) {
         super(id, name);
@@ -72,11 +66,4 @@ public class Dish extends NamedEntity{
         this.restaurant = restaurant;
     }
 
-    /*public Menu getMenu() {
-        return menu;
-    }
-
-    public void setMenu(Menu menu) {
-        this.menu = menu;
-    }*/
 }

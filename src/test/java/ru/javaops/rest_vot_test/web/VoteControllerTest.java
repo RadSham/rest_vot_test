@@ -61,7 +61,7 @@ class VoteControllerTest extends BaseControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(VOTE_MATCHER.contentJson(userVote3, userVote1));
+                .andExpect(VOTE_MATCHER.contentJson(userVote4, userVote1));
     }
 
     @Test
@@ -73,7 +73,7 @@ class VoteControllerTest extends BaseControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(VOTE_MATCHER.contentJson(userVote3, userVote1));
+                .andExpect(VOTE_MATCHER.contentJson(userVote4, userVote1));
     }
 
 
@@ -83,6 +83,27 @@ class VoteControllerTest extends BaseControllerTest {
         perform(MockMvcRequestBuilders.get(REST_URL + NOT_FOUND_ID))
                 .andDo(print())
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @WithUserDetails(value = USER_MAIL)
+    void getRating() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL + "rating"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(content().string(ratingTodayJSONString));
+    }
+
+    @Test
+    @WithUserDetails(value = USER_MAIL)
+    void getRatingOnDate() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL + "rating")
+                .param("date", "2020-05-20"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(content().string(ratingOnDateJSONString));
     }
 
     @Test
@@ -121,7 +142,7 @@ class VoteControllerTest extends BaseControllerTest {
         @WithUserDetails(value = USER_MAIL)
         void update() throws Exception {
             VoteService.setClock(voteBorderClock(true));
-            Vote updated = new Vote(userVote5Today);
+            Vote updated = new Vote(userVote6Today);
             updated.setRestaurant(restaurantNoma);
             perform(MockMvcRequestBuilders.put(REST_URL + USER_VOTE_TODAY_ID)
                     .contentType(MediaType.APPLICATION_JSON)
@@ -147,7 +168,7 @@ class VoteControllerTest extends BaseControllerTest {
         @WithUserDetails(value = USER_MAIL)
         void updateAfterTimeBorder() throws Exception {
             VoteService.setClock(voteBorderClock(false));
-            Vote updated = new Vote(userVote5Today);
+            Vote updated = new Vote(userVote6Today);
             updated.setRestaurant(restaurantNoma);
             perform(MockMvcRequestBuilders.put(REST_URL + USER_VOTE_TODAY_ID)
                     .contentType(MediaType.APPLICATION_JSON)
@@ -158,10 +179,10 @@ class VoteControllerTest extends BaseControllerTest {
         }
 
         @Test
-        @WithUserDetails(value = ADMIN_MAIL)
+        @WithUserDetails(value = USER2_MAIL)
         void createWithLocation() throws Exception {
             VoteService.setClock(voteBorderClock(true));
-            Vote nv = getNewVote(admin, restaurantMirazur);
+            Vote nv = getNewVote(user2, restaurantMirazur);
             ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(JsonUtil.writeValue(nv)))
@@ -202,7 +223,7 @@ class VoteControllerTest extends BaseControllerTest {
         @WithUserDetails(value = USER_MAIL)
         void createDuplicate() {
             VoteService.setClock(voteBorderClock(true));
-            Vote duplicate = new Vote(null, userVote5Today.getDate(), user, restaurantNoma);
+            Vote duplicate = new Vote(null, userVote6Today.getDate(), user, restaurantNoma);
             assertThrows(Exception.class, () ->
                     perform(MockMvcRequestBuilders.post(REST_URL)
                             .contentType(MediaType.APPLICATION_JSON)

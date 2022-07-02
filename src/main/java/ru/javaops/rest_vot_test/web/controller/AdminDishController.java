@@ -26,11 +26,9 @@ public class AdminDishController  {
 
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
-    private final DishRepository repository;
     private final DishService service;
 
-    public AdminDishController(DishRepository repository, DishService service) {
-        this.repository = repository;
+    public AdminDishController(DishService service) {
         this.service = service;
     }
 

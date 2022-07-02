@@ -10,6 +10,8 @@ import org.springframework.lang.Nullable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import ru.javaops.rest_vot_test.model.Rating;
+import ru.javaops.rest_vot_test.model.Restaurant;
 import ru.javaops.rest_vot_test.model.Vote;
 import ru.javaops.rest_vot_test.repository.VoteRepository;
 import ru.javaops.rest_vot_test.service.VoteService;
@@ -60,6 +62,16 @@ public class VoteController {
         int userId = authUser.id();
         log.info("getBetween dates({} - {}) for user {}", startDate, endDate, userId);
         return repository.getBetween(userId, startDate, endDate);
+    }
+
+    @GetMapping("/rating")
+    public List<Rating<Restaurant>> getRating(@RequestParam @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        if (date == null) {
+            log.info("getRating");
+        } else {
+            log.info("getRating by date {}", date);
+        }
+        return repository.getRating(date);
     }
 
     @DeleteMapping("/{id}")

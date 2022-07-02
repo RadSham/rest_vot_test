@@ -1,11 +1,13 @@
 INSERT INTO USERS (name, email, password)
 VALUES ('User', 'user@yandex.ru', '{noop}password'),
-       ('Admin', 'admin@gmail.com', '{noop}admin');
+       ('Admin', 'admin@gmail.com', '{noop}admin'),
+       ('user2@gmail.com', 'User2', '{noop}password2', DATEADD('DAY', -10, CURDATE()));
 
 INSERT INTO USER_ROLES (role, user_id)
 VALUES ('USER', 1),
        ('ADMIN', 2),
-       ('USER', 2);
+       ('USER', 2),
+       ('USER', 3);
 
 INSERT INTO restaurant (name)
 VALUES ('Noma'),
@@ -48,11 +50,12 @@ VALUES (1, 1),  /* Noma lunch 1, Beef Wellington */
 INSERT INTO vote (date, user_id, restaurant_id)
 VALUES ('2020-05-20', 1, 1),
        ('2020-05-20', 2, 1),
+       ('2020-05-20', 3, 3),
        ('2020-05-21', 1, 1),
        ('2020-05-21', 2, 1),
---       (CURDATE(), 1, 2),
+       (CURDATE(), 1, 2),
+       (CURDATE(), 2, 2),
        (DATEADD('DAY', -1, CURDATE()), 1, 3),
-       (DATEADD('DAY', -2, CURDATE()), 1, 1),
-       (CURDATE(), 2, 3),
        (DATEADD('DAY', -1, CURDATE()), 2, 1),
+       (DATEADD('DAY', -2, CURDATE()), 1, 1),
        (DATEADD('DAY', -2, CURDATE()), 2, 2);

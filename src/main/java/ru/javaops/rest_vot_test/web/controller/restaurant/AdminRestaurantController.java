@@ -9,6 +9,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.javaops.rest_vot_test.model.Menu;
 import ru.javaops.rest_vot_test.model.Restaurant;
 import ru.javaops.rest_vot_test.repository.MenuRepository;
+import ru.javaops.rest_vot_test.service.DishService;
 
 import javax.validation.Valid;
 
@@ -23,10 +24,10 @@ import static ru.javaops.rest_vot_test.util.validation.ValidationUtil.checkNew;
 public class AdminRestaurantController extends BaseRestaurantController {
     public static final String REST_URL = "/api/admin/restaurants";
 
-    private final MenuRepository menuRepository;
+    private final DishService dishService;
 
-    public AdminRestaurantController(MenuRepository menuRepository) {
-        this.menuRepository = menuRepository;
+    public AdminRestaurantController(DishService dishService) {
+        this.dishService = dishService;
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -52,8 +53,7 @@ public class AdminRestaurantController extends BaseRestaurantController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int id) {
         log.info("delete {}", id);
-        menuRepository.getByRestaurantId(id).forEach(Menu::clearDishes);
-        menuRepository.flush();
+        dishService.removeAllDishesFromMenus(id);
         repository.deleteExisted(id);
     }
 
