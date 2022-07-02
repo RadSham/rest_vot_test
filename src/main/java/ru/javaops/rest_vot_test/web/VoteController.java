@@ -20,7 +20,7 @@ import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
 
-import static ru.javaops.rest_vot_test.service.VoteService.actualVoteDate;
+import static ru.javaops.rest_vot_test.service.VoteService.getClock;
 import static ru.javaops.rest_vot_test.util.validation.ValidationUtil.*;
 
 @RestController
@@ -67,13 +67,14 @@ public class VoteController {
     public void delete(@AuthenticationPrincipal AuthUser authUser, @PathVariable int id) {
         log.info("delete {} for user {}", id, authUser.id());
         Vote vote = service.checkBelong(id, authUser.id());
-        checkDate(actualVoteDate(), vote.getDate());
+        checkDate(LocalDate.now(getClock()), vote.getDate());
         repository.delete(vote);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Vote> createWithLocation(@AuthenticationPrincipal AuthUser authUser, @Valid @RequestBody Vote vote) {
         log.info("create {}", vote);
+        service.checkTime();
         checkNew(vote);
         Vote created = service.save(vote,authUser.id());
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -86,8 +87,9 @@ public class VoteController {
     public void update (@AuthenticationPrincipal AuthUser authUser, @Valid @RequestBody Vote vote, @PathVariable int id) {
         int userId = authUser.id();
         log.info("update {} for user {}", vote, userId);
+        service.checkTime();
+        checkDate(LocalDate.now(getClock()), vote.getDate());
         assureIdConsistent(vote,id);
-        checkDate(actualVoteDate(), vote.getDate());
         service.checkBelong(id, userId);
         service.save(vote, userId);
     }
