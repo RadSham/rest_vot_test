@@ -27,7 +27,7 @@ public class RegularRestaurantController extends BaseRestaurantController {
     @GetMapping("/with-dishes")
     public List<Restaurant> getAllWithDishes() {
         log.info("getAllWithDishes");
-        return repository.getAllWithDishes();
+        return repository.getAllLoadDishes();
     }
 
     @GetMapping("/{id}")
@@ -39,6 +39,6 @@ public class RegularRestaurantController extends BaseRestaurantController {
     @GetMapping("/{id}/with-dishes")
     public ResponseEntity<Restaurant> getWithDishes(@PathVariable int id) {
         log.info("getWithDishes {}", id);
-        return ResponseEntity.of(repository.getWithDishes(id));
+        return ResponseEntity.of(repository.getByIdLoadDishes(id));
     }
 }
