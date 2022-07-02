@@ -50,14 +50,19 @@ public class AdminMenuController extends BaseMenuController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Transactional
     public void addDish(@PathVariable int id, @Valid @RequestBody @Nullable DishTo to, @RequestParam @Nullable Integer dish) {
-        if (dish != null) {
+        Menu menu = getByIdLoad(id);
+        if (dish == null) {
+            log.info("add new dish to menu {}", id);
+            checkNew(to);
+            Dish forAdd = dishService.fromTo(to);
+            checkBelongToRestaurant(menu, forAdd);
+            menu.addDishes(dishService.save(forAdd));
+        } else {
             log.info("add existing dish {} to menu {}", dish, id);
-            getByIdLoad(id).addDishes(dishService.getById(dish));
-            return;
+            Dish forAdd = dishService.getById(dish);
+            checkBelongToRestaurant(menu, forAdd);
+            menu.addDishes(forAdd);
         }
-        log.info("add new dish to menu {}", id);
-        checkNew(to);
-        getByIdLoad(id).addDishes(dishService.save(dishService.fromTo(to)));
     }
 
 
@@ -66,7 +71,10 @@ public class AdminMenuController extends BaseMenuController {
     @Transactional
     public void removeDish(@PathVariable int id, @RequestParam int dish) {
         log.info("removeDish from menu {}", id);
-        getByIdLoad(id).removeDishes(dishService.getById(dish));
+        Menu menu = getByIdLoad(id);
+        Dish forRemove = dishService.getById(dish);
+        checkBelongToMenu(menu, forRemove);
+        menu.removeDishes(forRemove);
     }
 
     @DeleteMapping("/{id}")
