@@ -18,21 +18,21 @@ import java.util.List;
 public class Restaurant extends NamedEntity{
 
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
-    @OrderBy("date DESC")
+    //@OrderBy("date DESC")
     //@JsonManagedReference
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private List<Menu> menus;
 
     @OneToMany(mappedBy = "restaurant")
-    @OrderBy("name DESC")
+    //@OrderBy("name DESC")
     //@JsonManagedReference
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private List<Dish> dishes;
 
     @OneToMany(mappedBy = "restaurant")
-    @OrderBy("date DESC")
+    //@OrderBy("date DESC")
     //@JsonManagedReference
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore

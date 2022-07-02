@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface VoteRepository extends BaseRepository<Vote> {
-    @Query("SELECT v FROM Vote V WHERE v.user.id = :userId " +
+    @Query("SELECT v FROM Vote v WHERE v.user.id = :userId " +
             "AND (:startDate IS NULL OR v.date >= :startDate) AND (:endDate IS NULL OR v.date <= :endDate) ORDER BY v.date DESC")
     List<Vote> getBetween(int userId, LocalDate startDate, LocalDate endDate);
 
