@@ -1,4 +1,4 @@
-package ru.javaops.rest_vot_test.web.restaurant;
+package ru.javaops.rest_vot_test.web.controller.restaurant;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -19,7 +19,7 @@ import static ru.javaops.rest_vot_test.util.validation.ValidationUtil.checkNew;
 @RequestMapping(value = AdminRestaurantController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
 public class AdminRestaurantController extends BaseRestaurantController {
-    static final String REST_URL = "/api/admin/restaurants";
+    public static final String REST_URL = "/api/admin/restaurants";
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Restaurant> createWithLocation(@Valid @RequestBody Restaurant restaurant) {

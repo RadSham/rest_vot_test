@@ -1,4 +1,4 @@
-package ru.javaops.rest_vot_test.web.restaurant;
+package ru.javaops.rest_vot_test.web.controller.restaurant;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
@@ -16,7 +16,7 @@ import java.util.List;
 @RequestMapping(value = RegularRestaurantController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
 public class RegularRestaurantController extends BaseRestaurantController {
-    static final String REST_URL = "/api/restaurants";
+    public static final String REST_URL = "/api/restaurants";
 
     @GetMapping
     public List<Restaurant> getAll() {

@@ -1,4 +1,4 @@
-package ru.javaops.rest_vot_test.web.user;
+package ru.javaops.rest_vot_test.web.controller.user;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheConfig;

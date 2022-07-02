@@ -5,11 +5,17 @@ import org.springframework.core.NestedExceptionUtils;
 import org.springframework.lang.NonNull;
 import ru.javaops.rest_vot_test.HasId;
 import ru.javaops.rest_vot_test.error.IllegalRequestDataException;
+import ru.javaops.rest_vot_test.web.GlobalExceptionHandler;
 
+import java.time.Clock;
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 @UtilityClass
 public class ValidationUtil {
+
+    public static final LocalTime VOTE_TIME_BORDER = LocalTime.of(11, 0);
+
 
     public static void checkNew(HasId bean) {
         if (!bean.isNew()) {
@@ -42,6 +48,12 @@ public class ValidationUtil {
     public static void checkDate(LocalDate expected, LocalDate actual) {
         if (!expected.isEqual(actual)) {
             throw new IllegalRequestDataException("Expected date " + expected + " but was " + actual);
+        }
+    }
+
+    public static void checkTime(Clock clock) {
+        if (!LocalTime.now(clock).isBefore(VOTE_TIME_BORDER)) {
+            throw new IllegalRequestDataException(GlobalExceptionHandler.EXCEPTION_TOO_LATE_FOR_VOTING + " before " + VOTE_TIME_BORDER);
         }
     }
 

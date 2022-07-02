@@ -12,7 +12,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import static ru.javaops.rest_vot_test.service.VoteService.VOTE_TIME_BORDER;
+import static ru.javaops.rest_vot_test.util.validation.ValidationUtil.VOTE_TIME_BORDER;
 
 public class TestData {
     public static final int EXIST_ID = 1;

@@ -14,6 +14,7 @@ import ru.javaops.rest_vot_test.model.Vote;
 import ru.javaops.rest_vot_test.repository.VoteRepository;
 import ru.javaops.rest_vot_test.service.VoteService;
 import ru.javaops.rest_vot_test.util.JsonUtil;
+import ru.javaops.rest_vot_test.web.controller.VoteController;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertFalse;

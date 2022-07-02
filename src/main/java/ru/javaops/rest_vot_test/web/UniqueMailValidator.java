@@ -1,4 +1,4 @@
-package ru.javaops.rest_vot_test.web.user;
+package ru.javaops.rest_vot_test.web;
 
 import lombok.AllArgsConstructor;
 import org.springframework.lang.NonNull;
@@ -7,8 +7,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import ru.javaops.rest_vot_test.HasIdAndEmail;
 import ru.javaops.rest_vot_test.repository.UserRepository;
-import ru.javaops.rest_vot_test.web.GlobalExceptionHandler;
-import ru.javaops.rest_vot_test.web.SecurityUtil;
+
 
 import javax.servlet.http.HttpServletRequest;
 

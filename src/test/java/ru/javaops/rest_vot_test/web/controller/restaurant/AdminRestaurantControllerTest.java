@@ -1,4 +1,4 @@
-package ru.javaops.rest_vot_test.web.restaurant;
+package ru.javaops.rest_vot_test.web.controller.restaurant;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +10,7 @@ import ru.javaops.rest_vot_test.model.Restaurant;
 import ru.javaops.rest_vot_test.repository.RestaurantRepository;
 import ru.javaops.rest_vot_test.util.JsonUtil;
 import ru.javaops.rest_vot_test.web.BaseControllerTest;
+import ru.javaops.rest_vot_test.web.controller.restaurant.AdminRestaurantController;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;

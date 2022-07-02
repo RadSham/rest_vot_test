@@ -12,7 +12,6 @@ import java.time.LocalTime;
 
 @Service
 public class VoteService {
-    public static final LocalTime VOTE_TIME_BORDER = LocalTime.of(11, 0);
     private static Clock clock;
     private final VoteRepository voteRepository;
     private final UserRepository userRepository;
@@ -45,10 +44,5 @@ public class VoteService {
         setClock(Clock.systemDefaultZone());
     }
 
-    public void checkTime() {
-        if (!LocalTime.now(clock).isBefore(VOTE_TIME_BORDER)) {
-            throw new IllegalRequestDataException(GlobalExceptionHandler.EXCEPTION_TOO_LATE_FOR_VOTING + " before " + VOTE_TIME_BORDER);
-        }
-    }
 
 }

@@ -1,4 +1,4 @@
-package ru.javaops.rest_vot_test.web.user;
+package ru.javaops.rest_vot_test.web.controller.user;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import ru.javaops.rest_vot_test.model.User;
 import ru.javaops.rest_vot_test.repository.UserRepository;
 import ru.javaops.rest_vot_test.util.UserUtil;
+import ru.javaops.rest_vot_test.web.UniqueMailValidator;
 
 @Slf4j
 public abstract class BaseUserController {

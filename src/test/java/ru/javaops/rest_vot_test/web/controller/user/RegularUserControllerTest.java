@@ -1,4 +1,4 @@
-package ru.javaops.rest_vot_test.web.user;
+package ru.javaops.rest_vot_test.web.controller.user;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.javaops.rest_vot_test.web.TestData.ForUser.*;
-import static ru.javaops.rest_vot_test.web.user.RegularUserController.REST_URL;
+import static ru.javaops.rest_vot_test.web.controller.user.RegularUserController.REST_URL;
 
 class RegularUserControllerTest extends BaseControllerTest {
 

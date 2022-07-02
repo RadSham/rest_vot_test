@@ -1,4 +1,4 @@
-package ru.javaops.rest_vot_test.web.user;
+package ru.javaops.rest_vot_test.web.controller.user;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +13,7 @@ import ru.javaops.rest_vot_test.model.User;
 import ru.javaops.rest_vot_test.repository.UserRepository;
 import ru.javaops.rest_vot_test.web.BaseControllerTest;
 import ru.javaops.rest_vot_test.web.GlobalExceptionHandler;
+import ru.javaops.rest_vot_test.web.controller.user.AdminUserController;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertFalse;

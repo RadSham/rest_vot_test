@@ -1,4 +1,4 @@
-package ru.javaops.rest_vot_test.web.restaurant;
+package ru.javaops.rest_vot_test.web.controller.restaurant;
 
 
 

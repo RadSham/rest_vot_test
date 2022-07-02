@@ -1,10 +1,11 @@
-package ru.javaops.rest_vot_test.web.restaurant;
+package ru.javaops.rest_vot_test.web.controller.restaurant;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.javaops.rest_vot_test.web.BaseControllerTest;
+import ru.javaops.rest_vot_test.web.controller.restaurant.RegularRestaurantController;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
