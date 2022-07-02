@@ -48,6 +48,10 @@ public class Menu extends NamedEntity{
 
     }
 
+    public Menu(Integer id, String name, LocalDate registered, Restaurant restaurant) {
+        this(id, name, registered, restaurant, null);
+    }
+
     public Menu(Integer id, String name, LocalDate registered, Restaurant restaurant, Collection<Dish> dishes) {
         super(id, name);
         this.registered = registered;
