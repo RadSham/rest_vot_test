@@ -22,7 +22,6 @@ import java.util.Set;
 public class Menu extends NamedEntity{
 
     @Column(name = "registered", nullable = false)
-    @NonNull
     private LocalDate registered;
 
     @ManyToOne
