@@ -192,13 +192,18 @@ class VoteControllerTest extends BaseControllerTest {
 
         @Test
         @WithUserDetails(value = USER_ID3_MAIL)
-        void createAfterTimeBorder() throws Exception {
+        void createAfterTimeBorderIfWasNoVoteToday() throws Exception {
             DateTimeUtil.setClock(voteBorderClock(false));
-            perform(MockMvcRequestBuilders.post(REST_URL)
+            ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
                     .param("restaurant", String.valueOf(RESTAURANT_NOMA_ID)))
                     .andDo(print())
-                    .andExpect(status().isUnprocessableEntity())
-                    .andExpect(content().string(containsString(GlobalExceptionHandler.EXCEPTION_TOO_LATE_FOR_VOTING)));
+                    .andExpect(status().isCreated());
+            Vote created = VOTE_MATCHER.readFromJson(action);
+            int newId = created.id();
+            Vote nv = VoteTD.getNewVote(userId3, restaurantNoma);
+            nv.setId(newId);
+            VOTE_MATCHER.assertMatch(created, nv);
+            VOTE_MATCHER.assertMatch(repository.getById(newId), nv);
         }
 
         @Test
