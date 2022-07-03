@@ -1,11 +1,10 @@
 package ru.javaops.rest_vot_test.repository;
 
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javaops.rest_vot_test.model.Rating;
-import ru.javaops.rest_vot_test.model.Restaurant;
 import ru.javaops.rest_vot_test.model.Vote;
+import ru.javaops.rest_vot_test.to.VoteTo;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -13,22 +12,15 @@ import java.util.Optional;
 
 @Transactional(readOnly = true)
 public interface VoteRepository extends BaseRepository<Vote> {
-    @Query("SELECT v FROM Vote v WHERE v.user.id = :userId " +
-            "AND (:startDate IS NULL OR v.actualDate >= :startDate) AND (:endDate IS NULL OR v.actualDate <= :endDate) ORDER BY v.actualDate DESC")
-    List<Vote> getByUserBetween(int userId, LocalDate startDate, LocalDate endDate);
+    @Query("SELECT v FROM Vote v WHERE v.user.id = :userId AND (:date IS NULL OR v.actualDate = :date)")
+    Optional<Vote> getByUserAndDate(int userId, LocalDate date);
 
-    @Query("SELECT v FROM Vote v WHERE v.user.id = :userId AND v.actualDate = :date")
-    Optional<Vote> getByUserOnDate(int userId, LocalDate date);
+    @Query("SELECT new ru.javaops.rest_vot_test.to.VoteTo(v.id, v.actualDate, v.restaurant.id) FROM Vote v WHERE v.user.id = :userId " +
+            "AND (:startDate IS NULL OR v.actualDate >= :startDate) AND (:endDate IS NULL OR v.actualDate <= :endDate)" +
+            "AND (:restaurantId IS NULL OR v.restaurant.id = :restaurantId) ORDER BY v.actualDate DESC")
+    List<VoteTo> getByFilterForUser(Integer userId, Integer restaurantId, LocalDate startDate, LocalDate endDate);
 
-    @EntityGraph(attributePaths = {"user"}, type = EntityGraph.EntityGraphType.LOAD)
-    @Query("SELECT v FROM Vote v WHERE (:userId IS NULL OR v.user.id = :userId)" +
-            "AND (:restaurantId IS NULL OR v.restaurant.id = :restaurantId)" +
-            "AND (:startDate IS NULL OR v.actualDate >= :startDate) AND (:endDate IS NULL OR v.actualDate <= :endDate) ORDER BY v.actualDate DESC")
-    List<Vote> getByFilterLoadUser(Integer userId, Integer restaurantId, LocalDate startDate, LocalDate endDate);
-
-    // https://www.baeldung.com/jpa-queries-custom-result-with-aggregation-functions#solution_constructor
-    @Query("SELECT new ru.javaops.rest_vot_test.model.Rating(v.restaurant, COUNT(v)) FROM Vote v " +
+    @Query("SELECT new ru.javaops.rest_vot_test.model.Rating(v.restaurant.id, COUNT(v)) FROM Vote v " +
             "WHERE (:date IS NULL AND v.actualDate = CURRENT_DATE) OR v.actualDate = :date GROUP BY v.restaurant ORDER BY COUNT(v) DESC")
-    List<Rating<Restaurant>> getRatingOnDate(LocalDate date);
-
+    List<Rating> getRatingByDate(LocalDate date);
 }

@@ -1,8 +1,10 @@
 package ru.javaops.rest_vot_test.web.testdata;
 
+import ru.javaops.rest_vot_test.model.Rating;
 import ru.javaops.rest_vot_test.model.Restaurant;
 import ru.javaops.rest_vot_test.model.User;
 import ru.javaops.rest_vot_test.model.Vote;
+import ru.javaops.rest_vot_test.to.VoteTo;
 import ru.javaops.rest_vot_test.util.DateTimeUtil;
 import ru.javaops.rest_vot_test.web.MatcherFactory;
 
@@ -14,17 +16,17 @@ import static ru.javaops.rest_vot_test.web.testdata.RestaurantTD.restaurantMiraz
 
 public class VoteTD {
     public static final MatcherFactory.Matcher<Vote> VOTE_MATCHER = MatcherFactory.usingEqualsComparator(Vote.class);
-    public static final int USER_VOTE_1_ID = 1;
+    public static final MatcherFactory.Matcher<VoteTo> VOTE_TO_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(VoteTo.class, "id");
+    public static final MatcherFactory.Matcher<Rating> RATING_MATCHER = MatcherFactory.usingEqualsComparator(Rating.class);
+
     public static final int USER_VOTE_TODAY_ID = 6;
-    public static final int ADMIN_VOTE_ID = 2;
-    public static final Vote userVote1 = new Vote(1, LocalDate.of(2020, Month.MAY, 20), UserTD.user, RestaurantTD.restaurantNoma);
-    public static final Vote userVote2 = new Vote(2, LocalDate.of(2020, Month.MAY, 20), UserTD.admin, RestaurantTD.restaurantNoma);
-    public static final Vote userVote3 = new Vote(3, LocalDate.of(2020, Month.MAY, 20), UserTD.userId3, RestaurantTD.restaurantAsador);
-    public static final Vote userVote4 = new Vote(4, LocalDate.of(2020, Month.MAY, 21), UserTD.user, RestaurantTD.restaurantNoma);
     public static final Vote userVote6Today = new Vote(USER_VOTE_TODAY_ID, currentDate(), UserTD.user, restaurantMirazur);
 
-    public static final String ratingTodayJSONString = "[{\"data\":{\"id\":2,\"name\":\"Mirazur\"},\"rating\":2}]";
-    public static final String ratingOnDateJSONString = "[{\"data\":{\"id\":1,\"name\":\"Noma\"},\"rating\":2},{\"data\":{\"id\":3,\"name\":\"Asador\"},\"rating\":1}]";
+    public static final VoteTo userVoteTo1 = new VoteTo(1, LocalDate.of(2020, Month.MAY, 20), RestaurantTD.RESTAURANT_NOMA_ID);
+    public static final VoteTo userVoteTo4 = new VoteTo(4, LocalDate.of(2020, Month.MAY, 21), RestaurantTD.RESTAURANT_NOMA_ID);
+
+    public static final Rating[] ratingToday = new Rating[] { new Rating(2, 2) };
+    public static final Rating[] ratingOnDate = new Rating[] { new Rating(1, 2), new Rating(3, 1) };
 
     public static Clock voteBorderClock(boolean before) {
         LocalTime time = VOTE_TIME_BORDER.minusMinutes(before ? 1 : 0);

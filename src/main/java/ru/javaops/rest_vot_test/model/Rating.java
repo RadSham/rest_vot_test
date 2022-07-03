@@ -1,18 +1,15 @@
 package ru.javaops.rest_vot_test.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
-public class Rating<T>
-{
-    private T data;
-    private int rating;
+@Value
+@ToString
+public class Rating {
+    int id;
+    int rating;
 
-    public Rating(T data, long rating) {
-        this.data = data;
+    public Rating(int id, long rating) {
+        this.id = id;
         this.rating = (int) rating;
     }
 }

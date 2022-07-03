@@ -23,7 +23,7 @@ import java.util.*;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString(callSuper = true, exclude = {"password", "votes"})
+@ToString(callSuper = true, exclude = "password")
 public class User extends NamedEntity implements HasIdAndEmail, Serializable {
     @Serial
     private static final long serialVersionUID = 1L;

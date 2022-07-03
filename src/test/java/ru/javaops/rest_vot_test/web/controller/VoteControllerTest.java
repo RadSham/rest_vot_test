@@ -38,19 +38,10 @@ class VoteControllerTest extends BaseControllerTest {
     @Autowired
     private VoteRepository repository;
 
-    @Test
-    @WithUserDetails(value = USER_MAIL)
-    void get() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + USER_VOTE_1_ID))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(VOTE_MATCHER.contentJson(userVote1));
-    }
 
     @Test
     void getUnauth() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + USER_VOTE_1_ID))
+        perform(MockMvcRequestBuilders.get(REST_URL))
                 .andExpect(status().isUnauthorized());
     }
 
@@ -58,36 +49,13 @@ class VoteControllerTest extends BaseControllerTest {
     @WithUserDetails(value = USER_MAIL)
     void getByFilter() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL)
-                .param("startDate", "2020-05-20")
-                .param("endDate", "2020-05-21")
-                .param("user", String.valueOf(USER_ID))
-                .param("restaurant", String.valueOf(RESTAURANT_NOMA_ID)))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(VOTE_MATCHER.contentJson(userVote4, userVote1));
-    }
-
-    @Test
-    @WithUserDetails(value = USER_MAIL)
-    void getMyBetweenWithoutParams() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + "my"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(VOTE_MATCHER.contentJson(List.of(userVote6Today)));
-    }
-
-    @Test
-    @WithUserDetails(value = USER_MAIL)
-    void getMyBetween() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + "my")
+                .param("restaurantId", String.valueOf(RESTAURANT_NOMA_ID))
                 .param("startDate", "2020-05-20")
                 .param("endDate", "2020-05-21"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(VOTE_MATCHER.contentJson(userVote4, userVote1));
+                .andExpect(VOTE_TO_MATCHER.contentJson(userVoteTo4, userVoteTo1));
     }
 
 
@@ -98,7 +66,7 @@ class VoteControllerTest extends BaseControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(content().string(ratingTodayJSONString));
+                .andExpect(RATING_MATCHER.contentJson(ratingToday));
     }
 
     @Test
@@ -109,15 +77,9 @@ class VoteControllerTest extends BaseControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(content().string(ratingOnDateJSONString));
+                .andExpect(RATING_MATCHER.contentJson(ratingOnDate));
     }
 
-    @Test
-    @WithUserDetails(value = USER_MAIL)
-    void deleteNotFound() throws Exception {
-        perform(MockMvcRequestBuilders.delete(REST_URL + ADMIN_VOTE_ID))
-                .andExpect(status().isUnprocessableEntity());
-    }
 
     @Nested
     class TimeDependedTest {
@@ -126,23 +88,6 @@ class VoteControllerTest extends BaseControllerTest {
             DateTimeUtil.resetClock();
         }
 
-        @Test
-        @WithUserDetails(value = USER_MAIL)
-        void delete() throws Exception {
-            DateTimeUtil.setClock(voteBorderClock(true));
-            perform(MockMvcRequestBuilders.delete(REST_URL))
-                    .andExpect(status().isNoContent());
-            assertFalse(repository.findById(USER_VOTE_TODAY_ID).isPresent());
-        }
-
-        @Test
-        @WithUserDetails(value = USER_MAIL)
-        void deleteAfterTimeBorder() throws Exception {
-            DateTimeUtil.setClock(voteBorderClock(false));
-            perform(MockMvcRequestBuilders.delete(REST_URL))
-                    .andExpect(status().isUnprocessableEntity())
-                    .andExpect(content().string(containsString(GlobalExceptionHandler.EXCEPTION_TOO_LATE_FOR_VOTING)));
-        }
 
         @Test
         @WithUserDetails(value = USER_MAIL)
@@ -151,7 +96,7 @@ class VoteControllerTest extends BaseControllerTest {
             Vote updated = copy(userVote6Today);
             updated.setRestaurant(restaurantNoma);
             perform(MockMvcRequestBuilders.put(REST_URL)
-                    .param("restaurant", String.valueOf(RESTAURANT_NOMA_ID))).andDo(print())
+                    .param("restaurantId", String.valueOf(RESTAURANT_NOMA_ID))).andDo(print())
                     .andExpect(status().isNoContent());
             VOTE_MATCHER.assertMatch(repository.getById(USER_VOTE_TODAY_ID), updated);
         }
@@ -161,7 +106,7 @@ class VoteControllerTest extends BaseControllerTest {
         void updateNotFound() throws Exception {
             DateTimeUtil.setClock(voteBorderClock(true));
             perform(MockMvcRequestBuilders.put(REST_URL)
-                    .param("restaurant", String.valueOf(NOT_FOUND_ID)))
+                    .param("restaurantId", String.valueOf(NOT_FOUND_ID)))
                     .andDo(print())
                     .andExpect(status().isUnprocessableEntity());
         }
@@ -171,7 +116,7 @@ class VoteControllerTest extends BaseControllerTest {
         void updateAfterTimeBorder() throws Exception {
             DateTimeUtil.setClock(voteBorderClock(false));
             perform(MockMvcRequestBuilders.put(REST_URL)
-                    .param("restaurant", String.valueOf(RESTAURANT_NOMA_ID)))
+                    .param("restaurantId", String.valueOf(RESTAURANT_NOMA_ID)))
                     .andDo(print())
                     .andExpect(status().isUnprocessableEntity())
                     .andExpect(content().string(containsString(GlobalExceptionHandler.EXCEPTION_TOO_LATE_FOR_VOTING)));
@@ -182,7 +127,7 @@ class VoteControllerTest extends BaseControllerTest {
         void createWithLocation() throws Exception {
             DateTimeUtil.setClock(voteBorderClock(true));
             ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
-                    .param("restaurant", String.valueOf(RESTAURANT_NOMA_ID)))
+                    .param("restaurantId", String.valueOf(RESTAURANT_NOMA_ID)))
                     .andExpect(status().isCreated());
             Vote created = VOTE_MATCHER.readFromJson(action);
             int newId = created.id();
@@ -197,7 +142,7 @@ class VoteControllerTest extends BaseControllerTest {
         void createAfterTimeBorderIfWasNoVoteToday() throws Exception {
             DateTimeUtil.setClock(voteBorderClock(false));
             ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
-                    .param("restaurant", String.valueOf(RESTAURANT_NOMA_ID)))
+                    .param("restaurantId", String.valueOf(RESTAURANT_NOMA_ID)))
                     .andDo(print())
                     .andExpect(status().isCreated());
             Vote created = VOTE_MATCHER.readFromJson(action);
@@ -213,7 +158,7 @@ class VoteControllerTest extends BaseControllerTest {
         void createWithNotFound() throws Exception {
             DateTimeUtil.setClock(voteBorderClock(true));
             perform(MockMvcRequestBuilders.post(REST_URL)
-                    .param("restaurant", String.valueOf(NOT_FOUND_ID)))
+                    .param("restaurantId", String.valueOf(NOT_FOUND_ID)))
                     .andDo(print())
                     .andExpect(status().isUnprocessableEntity());
         }
@@ -225,11 +170,9 @@ class VoteControllerTest extends BaseControllerTest {
             DateTimeUtil.setClock(voteBorderClock(true));
             assertThrows(Exception.class, () ->
                     perform(MockMvcRequestBuilders.post(REST_URL)
-                            .param("restaurant", String.valueOf(RESTAURANT_NOMA_ID)))
+                            .param("restaurantId", String.valueOf(RESTAURANT_NOMA_ID)))
                             .andDo(print())
                             .andExpect(status().isUnprocessableEntity()));
         }
-
-
     }
 }
