@@ -1,5 +1,6 @@
 package ru.javaops.rest_vot_test.web.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -33,6 +34,7 @@ public class AdminDishController  {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Create", tags = "dishes")
     public ResponseEntity<Dish> createWithLocation(@Valid @RequestBody DishTo to) {
         log.info("create {}", to);
         checkNew(to);
@@ -45,6 +47,7 @@ public class AdminDishController  {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(summary = "Update", tags = "dishes")
     public void update(@Valid @RequestBody DishTo to, @PathVariable int id) {
         log.info("update dish from TO {}", to);
         assureIdConsistent(to, id);
@@ -53,6 +56,7 @@ public class AdminDishController  {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(summary = "Delete", tags = "dishes")
     public void delete(@PathVariable int id) {
         log.info("delete {}", id);
         service.delete(id);

@@ -1,5 +1,6 @@
 package ru.javaops.rest_vot_test.web.controller.menu;
 
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,7 @@ public class AdminMenuController extends BaseMenuController {
     public static final String REST_URL = "/api/admin/menu";
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Create new", tags = "menu")
     public ResponseEntity<Menu> createWithLocation(@Valid @RequestBody MenuTo to) {
         log.info("create from to {}", to);
         checkNew(to);
@@ -40,6 +42,7 @@ public class AdminMenuController extends BaseMenuController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(summary = "Update", tags = "menu")
     public void update(@PathVariable int id, @Valid @RequestBody MenuTo to) {
         log.info("update from to {}", to);
         assureIdConsistent(to, id);
@@ -49,6 +52,7 @@ public class AdminMenuController extends BaseMenuController {
     @PatchMapping("/{id}/add")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Transactional
+    @Operation(summary = "Add dish to menu, new (with TO) or existing (with 'dish' param)", tags = "menu")
     public void addDish(@PathVariable int id, @Valid @RequestBody @Nullable DishTo to, @RequestParam @Nullable Integer dish) {
         Menu menu = getByIdLoad(id);
         if (dish == null) {
@@ -79,6 +83,7 @@ public class AdminMenuController extends BaseMenuController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(summary = "Delete", tags = "menu")
     public void delete(@PathVariable int id) {
         log.info("delete {}", id);
         repository.deleteExisted(id);

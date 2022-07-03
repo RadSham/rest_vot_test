@@ -1,5 +1,6 @@
 package ru.javaops.rest_vot_test.web.controller.user;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -29,6 +30,7 @@ public class RegularUserController extends BaseUserController {
     static final String REST_URL = "/api/profile";
 
     @GetMapping
+    @Operation(summary = "Get authorized user data", tags = "account")
     public User get(@AuthenticationPrincipal AuthUser authUser) {
         log.info("get auth user {}", authUser.id());
         return authUser.getUser();
@@ -36,6 +38,7 @@ public class RegularUserController extends BaseUserController {
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(summary = "Delete yourself", tags = "account")
     public void delete(@AuthenticationPrincipal AuthUser authUser) {
         log.info("delete {}", authUser.id());
         super.delete(authUser.id());
@@ -43,6 +46,7 @@ public class RegularUserController extends BaseUserController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
+    @Operation(summary = "Register yourself", tags = "account")
     public ResponseEntity<User> register(@Valid @RequestBody UserTo userTo) {
         log.info("register {}", userTo);
         checkNew(userTo);
@@ -55,6 +59,7 @@ public class RegularUserController extends BaseUserController {
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Transactional
+    @Operation(summary = "Update authorized user data", tags = "account")
     public void update(@AuthenticationPrincipal AuthUser authUser, @RequestBody @Valid UserTo userTo) {
         log.info("update {} with id={}", userTo, authUser.id());
         assureIdConsistent(userTo, authUser.id());

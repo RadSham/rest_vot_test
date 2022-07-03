@@ -1,5 +1,6 @@
 package ru.javaops.rest_vot_test.web.controller.restaurant;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -31,6 +32,7 @@ public class AdminRestaurantController extends BaseRestaurantController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Create", tags = "restaurants")
     public ResponseEntity<Restaurant> createWithLocation(@Valid @RequestBody Restaurant restaurant) {
         log.info("create {}", restaurant);
         checkNew(restaurant);
@@ -43,6 +45,7 @@ public class AdminRestaurantController extends BaseRestaurantController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(summary = "Update", tags = "restaurants")
     public void update(@PathVariable int id, @Valid @RequestBody Restaurant restaurant) {
         log.info("update {}", restaurant);
         assureIdConsistent(restaurant, id);
@@ -51,6 +54,7 @@ public class AdminRestaurantController extends BaseRestaurantController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(summary = "Delete", tags = "restaurants")
     public void delete(@PathVariable int id) {
         log.info("delete {}", id);
         dishService.removeAllDishesFromMenu(id);
