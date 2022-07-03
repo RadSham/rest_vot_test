@@ -54,21 +54,12 @@ public class AdminMenuController extends BaseMenuController {
     @PatchMapping("/{id}/add")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Transactional
-    @Operation(summary = "Add dish to menu, new (with TO) or existing (with 'dish' param)", tags = "menu")
-    public void addDish(@PathVariable int id, @Valid @RequestBody @Nullable DishTo to, @RequestParam @Nullable Integer dish) {
-        Menu menu = getByIdLoad(id);
-        if (dish == null) {
-            log.info("add new dish to menu {}", id);
-            checkNew(to);
-            Dish forAdd = dishService.fromTo(to);
-            checkBelongToRestaurant(menu, forAdd);
-            menu.addDishes(dishService.save(forAdd));
-        } else {
-            log.info("add existing dish {} to menu {}", dish, id);
-            Dish forAdd = dishService.getById(dish);
-            checkBelongToRestaurant(menu, forAdd);
-            menu.addDishes(forAdd);
-        }
+    @Operation(summary = "Add dish to menu", tags = "menu")
+    public void addDish(@PathVariable int id, @RequestParam int dish) {        Menu menu = getByIdLoad(id);
+        log.info("add dish {} to menu {}", dish, id);
+        Dish forAdd = dishService.checkBelong(dish, menu.getRestaurant().getId());
+        checkBelongToRestaurant(menu, forAdd);
+        menu.addDishes(forAdd);
     }
 
 
@@ -78,7 +69,7 @@ public class AdminMenuController extends BaseMenuController {
     public void removeDish(@PathVariable int id, @RequestParam int dish) {
         log.info("removeDish from menu {}", id);
         Menu menu = getByIdLoad(id);
-        Dish forRemove = dishService.getById(dish);
+        Dish forRemove = dishService.checkBelong(dish, menu.getRestaurant().getId());
         checkBelongToMenu(menu, forRemove);
         menu.removeDishes(forRemove);
     }

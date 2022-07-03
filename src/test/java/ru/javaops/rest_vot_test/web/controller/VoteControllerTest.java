@@ -1,4 +1,4 @@
-package ru.javaops.rest_vot_test.web;
+package ru.javaops.rest_vot_test.web.controller;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Nested;
@@ -14,6 +14,8 @@ import ru.javaops.rest_vot_test.model.Vote;
 import ru.javaops.rest_vot_test.repository.VoteRepository;
 import ru.javaops.rest_vot_test.util.DateTimeUtil;
 import ru.javaops.rest_vot_test.util.JsonUtil;
+import ru.javaops.rest_vot_test.web.BaseControllerTest;
+import ru.javaops.rest_vot_test.web.GlobalExceptionHandler;
 import ru.javaops.rest_vot_test.web.controller.VoteController;
 import ru.javaops.rest_vot_test.web.testdata.VoteTD;
 

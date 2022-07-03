@@ -1,5 +1,11 @@
-package ru.javaops.rest_vot_test.web.controller.dish;
+package ru.javaops.rest_vot_test.web.controller;
 
+import ru.javaops.rest_vot_test.model.Dish;
+import ru.javaops.rest_vot_test.repository.DishRepository;
+import ru.javaops.rest_vot_test.to.DishTo;
+import ru.javaops.rest_vot_test.util.JsonUtil;
+import ru.javaops.rest_vot_test.web.BaseControllerTest;
+import ru.javaops.rest_vot_test.web.testdata.UserTD;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -8,19 +14,14 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import ru.javaops.rest_vot_test.model.Dish;
-import ru.javaops.rest_vot_test.repository.DishRepository;
-import ru.javaops.rest_vot_test.to.DishTo;
-import ru.javaops.rest_vot_test.util.JsonUtil;
-import ru.javaops.rest_vot_test.web.BaseControllerTest;
-import ru.javaops.rest_vot_test.web.controller.AdminDishController;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.javaops.rest_vot_test.web.testdata.CommonTD.NOT_FOUND_ID;
 import static ru.javaops.rest_vot_test.web.testdata.DishTD.*;
-import static ru.javaops.rest_vot_test.web.testdata.RestaurantTD.RESTAURANT_NOMA_ID;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import static ru.javaops.rest_vot_test.web.testdata.RestaurantTD.restaurantNoma;
 import static ru.javaops.rest_vot_test.web.testdata.UserTD.ADMIN_MAIL;
 import static ru.javaops.rest_vot_test.web.testdata.UserTD.USER_MAIL;
@@ -31,6 +32,28 @@ class AdminDishControllerTest extends BaseControllerTest {
 
     @Autowired
     private DishRepository repository;
+
+    @Test
+    @WithUserDetails(value = UserTD.ADMIN_MAIL)
+    void getByFilter() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL)
+                .param("restaurantId", String.valueOf(1)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(DISH_MATCHER.contentJson(dish1, dish2, dish3));
+    }
+
+    @Test
+    @WithUserDetails(value = UserTD.ADMIN_MAIL)
+    void get() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL + DISH_1_ID))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(DISH_MATCHER.contentJson(dish1));
+    }
+
 
     @Test
     @WithUserDetails(value = USER_MAIL)
@@ -81,6 +104,18 @@ class AdminDishControllerTest extends BaseControllerTest {
                 .andDo(print())
                 .andExpect(status().isNoContent());
         DISH_MATCHER.assertMatch(repository.getById(DISH_1_ID), dish);
+    }
+
+    @Test
+    @WithUserDetails(value = UserTD.ADMIN_MAIL)
+    void updateNotBelong() throws Exception {
+        DishTo to = fromDish(dish1, RESTAURANT_WITHOUT_DISH_1_ID);
+
+        perform(MockMvcRequestBuilders.put(REST_URL + DISH_1_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(to)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
     }
 
     @Test

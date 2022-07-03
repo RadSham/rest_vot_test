@@ -3,6 +3,7 @@ package ru.javaops.rest_vot_test.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import ru.javaops.rest_vot_test.error.IllegalRequestDataException;
 import ru.javaops.rest_vot_test.error.NotFoundException;
 import ru.javaops.rest_vot_test.model.Dish;
 import ru.javaops.rest_vot_test.model.Menu;
@@ -13,6 +14,7 @@ import ru.javaops.rest_vot_test.repository.RestaurantRepository;
 import ru.javaops.rest_vot_test.to.DishTo;
 
 import java.util.List;
+import java.util.Optional;
 
 import static ru.javaops.rest_vot_test.util.ErrorUtil.notFound;
 
@@ -32,18 +34,18 @@ public class DishService {
         return repository.getByRestaurantId(restaurantId);
     }
 
-    public Dish getById(int id) {
-        return repository.findById(id).orElseThrow(notFound(Dish.class, id));
+    public Optional<Dish> findById(int id) {
+        return repository.findById(id);
     }
 
-    public Dish save(Dish dish) {
+    public Dish saveFromTo(DishTo to) {
+        Dish dish = new Dish(to.getId(), to.getName(), to.getPrice(), restRepository.getById(to.getRestaurant_id()));
         return repository.save(dish);
     }
 
-    public Dish fromTo(DishTo to) {
-        Restaurant restaurant = restRepository.findById(to.getRestaurant_id())
-                .orElseThrow(notFound(Restaurant.class, to.getRestaurant_id()));
-        return new Dish(to.getId(), to.getName(), to.getPrice(), restaurant);
+    public Dish checkBelong(int id, int restaurantId) {
+        return repository.get(id, restaurantId).orElseThrow(
+                () -> new IllegalRequestDataException("Dish id=" + id + " doesn't belong to Restaurant id=" + restaurantId));
     }
 
     public void removeAllDishesFromMenu(int restaurantId) {
