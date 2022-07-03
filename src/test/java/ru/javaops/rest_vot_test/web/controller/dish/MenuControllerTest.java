@@ -5,7 +5,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.javaops.rest_vot_test.web.BaseControllerTest;
-import ru.javaops.rest_vot_test.web.controller.menu.RegularMenuController;
+import ru.javaops.rest_vot_test.web.controller.menu.MenuController;
 
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -16,8 +16,8 @@ import static ru.javaops.rest_vot_test.web.testdata.CommonTD.NOT_FOUND_ID;
 import static ru.javaops.rest_vot_test.web.testdata.MenuTD.*;
 import static ru.javaops.rest_vot_test.web.testdata.UserTD.USER_MAIL;
 
-class RegularMenuControllerTest extends BaseControllerTest {
-    static final String REST_URL = RegularMenuController.REST_URL + "/";
+class MenuControllerTest extends BaseControllerTest {
+    static final String REST_URL = MenuController.REST_URL + "/";
 
     @Test
     @WithUserDetails(value = USER_MAIL)

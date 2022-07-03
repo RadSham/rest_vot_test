@@ -13,8 +13,8 @@ import static ru.javaops.rest_vot_test.web.testdata.CommonTD.NOT_FOUND_ID;
 import static ru.javaops.rest_vot_test.web.testdata.RestaurantTD.*;
 import static ru.javaops.rest_vot_test.web.testdata.UserTD.USER_MAIL;
 
-public class RegularRestaurantControllerTest extends BaseControllerTest {
-    static final String REST_URL = RegularRestaurantController.REST_URL + "/";
+public class RestaurantControllerTest extends BaseControllerTest {
+    static final String REST_URL = RestaurantController.REST_URL + "/";
 
     @Test
     @WithUserDetails(value = USER_MAIL)

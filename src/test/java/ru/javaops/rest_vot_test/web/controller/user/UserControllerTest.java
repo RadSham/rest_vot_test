@@ -18,10 +18,10 @@ import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.javaops.rest_vot_test.web.controller.user.RegularUserController.REST_URL;
+import static ru.javaops.rest_vot_test.web.controller.user.UserController.REST_URL;
 import static ru.javaops.rest_vot_test.web.testdata.UserTD.*;
 
-class RegularUserControllerTest extends BaseControllerTest {
+class UserControllerTest extends BaseControllerTest {
 
     @Autowired
     private UserRepository userRepository;

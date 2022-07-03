@@ -27,11 +27,11 @@ import static ru.javaops.rest_vot_test.util.validation.ValidationUtil.assureIdCo
 import static ru.javaops.rest_vot_test.util.validation.ValidationUtil.checkNew;
 
 @RestController
-@RequestMapping(value = RegularUserController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = UserController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
 @CacheConfig(cacheNames = "users")
 // TODO: cache only most requested data!
-public class RegularUserController extends BaseUserController {
+public class UserController extends BaseUserController {
     static final String REST_URL = "/api/profile";
 
     @GetMapping
