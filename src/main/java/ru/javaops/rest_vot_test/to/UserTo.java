@@ -16,9 +16,6 @@ import java.io.Serial;
 @ToString(callSuper = true)
 public class UserTo extends NamedTo implements HasIdAndEmail {
 
-    @Serial
-    private static final long serialVersionUID = 7747547401459053473L;
-
     @Email
     @NotBlank
     @Size(max = 100)

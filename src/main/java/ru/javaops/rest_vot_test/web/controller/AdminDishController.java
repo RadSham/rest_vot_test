@@ -28,15 +28,15 @@ import static ru.javaops.rest_vot_test.util.validation.ValidationUtil.checkNew;
 @RequestMapping(value = AdminDishController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
 @AllArgsConstructor
-public class AdminDishController  {
+public class AdminDishController {
     public static final String REST_URL = "/api/admin/dishes";
 
     private final DishService service;
 
     @GetMapping
     @Operation(summary = "Get all by restaurant Id (default - all restaurants)", tags = "dishes")
-    public List<Dish> getByFilter(@RequestParam @Nullable Integer restaurantId) {
-        log.info("getByFilter: restaurant {}", restaurantId);
+    public List<Dish> getByRestaurantId(@RequestParam @Nullable Integer restaurantId) {
+        log.info("getByRestaurantId: restaurantId {}", restaurantId);
         return service.getByRestaurantId(restaurantId);
     }
 
