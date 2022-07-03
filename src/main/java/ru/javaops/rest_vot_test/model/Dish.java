@@ -1,6 +1,7 @@
 package ru.javaops.rest_vot_test.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -20,7 +21,7 @@ public class Dish extends NamedEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "restaurant_id", nullable = false)
-    @JsonBackReference
+    @JsonIgnore
     private Restaurant restaurant;
 
     public Dish(Integer id, String name, double price, Restaurant restaurant) {

@@ -28,8 +28,8 @@ public class Restaurant extends NamedEntity {
 
     @OneToMany(mappedBy = "restaurant")
     @OrderBy("name DESC")
-    @JsonManagedReference
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
     private Set<Dish> dishes;
 
     @OneToMany(mappedBy = "restaurant")

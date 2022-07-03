@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.javaops.rest_vot_test.model.Dish;
@@ -18,6 +19,7 @@ import ru.javaops.rest_vot_test.to.DishTo;
 import javax.validation.Valid;
 
 import java.net.URI;
+import java.util.List;
 
 import static ru.javaops.rest_vot_test.util.validation.ValidationUtil.assureIdConsistent;
 import static ru.javaops.rest_vot_test.util.validation.ValidationUtil.checkNew;
@@ -30,6 +32,13 @@ public class AdminDishController  {
     public static final String REST_URL = "/api/admin/dishes";
 
     private final DishService service;
+
+    @GetMapping
+    @Operation(summary = "Get all by restaurant Id (default - all restaurants)", tags = "dishes")
+    public List<Dish> getByFilter(@RequestParam @Nullable Integer restaurantId) {
+        log.info("getByFilter: restaurant {}", restaurantId);
+        return service.getByRestaurantId(restaurantId);
+    }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Create", tags = "dishes")
