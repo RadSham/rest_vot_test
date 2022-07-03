@@ -38,7 +38,7 @@ class AdminRestaurantControllerTest extends BaseControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void createWithLocation() throws Exception {
-        Restaurant nr = of(null,"Test Restaurant");
+        Restaurant nr = of(null,"Test Restaurant", "+1-111-222-3344");
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(nr)))
@@ -53,7 +53,7 @@ class AdminRestaurantControllerTest extends BaseControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void createInvalid() throws Exception {
-        Restaurant invalid = new Restaurant(null, null);
+        Restaurant invalid = new Restaurant(null, null, null);
         perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(invalid)))
@@ -64,7 +64,7 @@ class AdminRestaurantControllerTest extends BaseControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void update() throws Exception {
-        Restaurant updated = of(EXIST_ID, "Updatable Restaurant");
+        Restaurant updated = of(EXIST_ID, "Updatable Restaurant", "+1-111-222-3344");
         perform(MockMvcRequestBuilders.put(REST_URL + EXIST_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(updated)))
@@ -76,7 +76,7 @@ class AdminRestaurantControllerTest extends BaseControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void updateInvalid() throws Exception {
-        Restaurant invalid = of(EXIST_ID, "");
+        Restaurant invalid = of(EXIST_ID, "", "");
         perform(MockMvcRequestBuilders.put(REST_URL + EXIST_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(invalid)))
@@ -87,7 +87,7 @@ class AdminRestaurantControllerTest extends BaseControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void updateHtmlUnsafe() throws Exception {
-        Restaurant updated = of(EXIST_ID, "Updatable Restaurant");
+        Restaurant updated = of(EXIST_ID, "Updatable Restaurant", "+1-111-222-3344");
         updated.setName("<script>alert(123)</script>");
         perform(MockMvcRequestBuilders.put(REST_URL + EXIST_ID)
                 .contentType(MediaType.APPLICATION_JSON)
