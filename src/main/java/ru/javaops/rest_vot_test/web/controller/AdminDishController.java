@@ -1,6 +1,8 @@
 package ru.javaops.rest_vot_test.web.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -22,16 +24,12 @@ import static ru.javaops.rest_vot_test.util.validation.ValidationUtil.checkNew;
 
 @RestController
 @RequestMapping(value = AdminDishController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+@Slf4j
+@AllArgsConstructor
 public class AdminDishController  {
     public static final String REST_URL = "/api/admin/dishes";
 
-    protected final Logger log = LoggerFactory.getLogger(getClass());
-
     private final DishService service;
-
-    public AdminDishController(DishService service) {
-        this.service = service;
-    }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Create", tags = "dishes")

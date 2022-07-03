@@ -13,6 +13,8 @@ import ru.javaops.rest_vot_test.to.DishTo;
 import ru.javaops.rest_vot_test.to.MenuTo;
 import ru.javaops.rest_vot_test.util.JsonUtil;
 import ru.javaops.rest_vot_test.web.BaseControllerTest;
+import ru.javaops.rest_vot_test.web.testdata.DishTD;
+import ru.javaops.rest_vot_test.web.testdata.MenuTD;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -43,7 +45,7 @@ class AdminMenuControllerTest extends BaseControllerTest {
         MenuTo newTo = fromMenu(menuNomaTodayID2);
         newTo.setId(null);
         newTo.setName("New menu");
-        Menu newMenu = new Menu(newTo.getName(), newTo.getRegistered(), restaurantNoma);
+        Menu newMenu = new Menu(null, newTo.getName(), newTo.getRegistered(), restaurantNoma);
 
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -72,7 +74,7 @@ class AdminMenuControllerTest extends BaseControllerTest {
     void update() throws Exception {
         MenuTo to = fromMenu(menuNomaTodayID2);
         to.setName("Updated");
-        Menu menu = new Menu(menuNomaTodayID2);
+        Menu menu = copy(menuNomaTodayID2);
         menu.setName("Updated");
 
         perform(MockMvcRequestBuilders.put(REST_URL + MENU_NOMA_TODAY_ID)
@@ -112,8 +114,8 @@ class AdminMenuControllerTest extends BaseControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void addExistingDish() throws Exception {
-        Menu menu = new Menu(menuNomaTodayID2WithDishes);
-        menu.addDishes(new Dish(dishNomaFree));
+        Menu menu = MenuTD.copy(menuNomaTodayID2WithDishes);
+        menu.addDishes(DishTD.copy(dishNomaFree));
 
         perform(MockMvcRequestBuilders.patch(REST_URL + MENU_NOMA_TODAY_ID + "/add")
                 .param("dish", String.valueOf(DISH_NOMA_FREE_ID)))
@@ -134,7 +136,7 @@ class AdminMenuControllerTest extends BaseControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void addNewDish() throws Exception {
-        Menu menu = new Menu(menuNomaTodayID2WithDishes);
+        Menu menu = MenuTD.copy(menuNomaTodayID2WithDishes);
         Dish newDish = new Dish(null, "New Dish", 52.5, restaurantNoma);
         menu.addDishes(newDish);
         DishTo newTo = fromDish(newDish);
@@ -149,7 +151,7 @@ class AdminMenuControllerTest extends BaseControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void removeDish() throws Exception {
-        Menu menu = new Menu(menuNomaTodayID2WithDishes);
+        Menu menu = MenuTD.copy(menuNomaTodayID2WithDishes);
         menu.removeDishes(dishNoma1);
 
         perform(MockMvcRequestBuilders.patch(REST_URL + MENU_NOMA_TODAY_ID + "/remove")

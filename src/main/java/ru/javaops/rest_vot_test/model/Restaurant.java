@@ -4,7 +4,9 @@ package ru.javaops.rest_vot_test.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -16,7 +18,9 @@ import java.util.Set;
 @Table(name = "restaurant")
 @Getter
 @Setter
-public class Restaurant extends NamedEntity{
+@NoArgsConstructor
+@ToString(callSuper = true)
+public class Restaurant extends NamedEntity {
 
     @OneToMany(mappedBy = "restaurant")
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -33,23 +37,9 @@ public class Restaurant extends NamedEntity{
     @JsonIgnore
     private List<Vote> votes;
 
-    public Restaurant() {
-    }
-
-    public Restaurant(Integer id, String name) {
-        this(id, name, null);
-    }
 
     public Restaurant(Integer id, String name, Set<Dish> dishes) {
         super(id, name);
-        this.dishes = dishes;
-    }
-
-    public Set<Dish> getDishes() {
-        return dishes;
-    }
-
-    public void setDishes(Set<Dish> dishes) {
         this.dishes = dishes;
     }
 }

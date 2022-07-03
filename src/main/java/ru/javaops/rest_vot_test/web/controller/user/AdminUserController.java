@@ -24,9 +24,9 @@ import static ru.javaops.rest_vot_test.util.validation.ValidationUtil.checkNew;
 
 @RestController
 @RequestMapping(value = AdminUserController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
-@Slf4j
 // TODO: cache only most requested data!
 @CacheConfig(cacheNames = "users")
+@Slf4j
 public class AdminUserController extends BaseUserController {
 
     static final String REST_URL = "/api/admin/users";

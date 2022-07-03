@@ -9,6 +9,7 @@ import ru.javaops.rest_vot_test.model.User;
 @ToString(of = "user")
 public class AuthUser extends org.springframework.security.core.userdetails.User {
 
+    @ToString.Include
     private final User user;
 
     public AuthUser(@NonNull User user) {

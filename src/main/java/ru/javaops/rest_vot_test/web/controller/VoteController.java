@@ -1,6 +1,8 @@
 package ru.javaops.rest_vot_test.web.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -30,18 +32,14 @@ import static ru.javaops.rest_vot_test.util.validation.ValidationUtil.*;
 
 @RestController
 @RequestMapping(value = VoteController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+@Slf4j
+@AllArgsConstructor
 public class VoteController {
 
-    protected final Logger log = LoggerFactory.getLogger(getClass());
     public static final String REST_URL = "/api/votes";
 
     private final VoteRepository repository;
     private final VoteService service;
-
-    public VoteController(VoteRepository repository, VoteService service) {
-        this.repository = repository;
-        this.service = service;
-    }
 
     @GetMapping
     @Operation(summary = "Get all by filter (default - for current date)", tags = "votes")

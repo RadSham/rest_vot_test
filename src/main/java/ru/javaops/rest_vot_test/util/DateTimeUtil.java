@@ -1,8 +1,11 @@
 package ru.javaops.rest_vot_test.util;
 
+import lombok.experimental.UtilityClass;
+
 import java.time.Clock;
 import java.time.LocalDate;
 
+@UtilityClass
 public class DateTimeUtil {
     private static Clock clock; // https://stackoverflow.com/a/45833128
 

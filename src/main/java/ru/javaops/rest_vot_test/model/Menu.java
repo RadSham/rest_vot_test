@@ -2,9 +2,7 @@ package ru.javaops.rest_vot_test.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
@@ -14,9 +12,11 @@ import java.util.*;
 
 @Entity
 @Table(name = "menu", uniqueConstraints = {@UniqueConstraint(columnNames = {"id", "restaurant_id"}, name = "menu_restaurant_idx")})
-@Setter
 @Getter
-public class Menu extends NamedEntity{
+@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString(callSuper = true)
+public class Menu extends NamedEntity {
 
     @Column(name = "registered", nullable = false)
     private LocalDate registered;
@@ -33,24 +33,8 @@ public class Menu extends NamedEntity{
     )
     private Set<Dish> dishes;
 
-    public Menu() {
-    }
-
-    public Menu(String name, LocalDate registered, Restaurant restaurant) {
-        this(null, name, registered, restaurant, null);
-    }
-
-    public Menu(String name, LocalDate registered, Restaurant restaurant, Dish... dishes) {
-        this(null, name, registered, restaurant, Arrays.asList(dishes));
-
-    }
-
     public Menu(Integer id, String name, LocalDate registered, Restaurant restaurant) {
         this(id, name, registered, restaurant, null);
-    }
-
-    public Menu(Menu m) {
-        this(m.getId(), m.getName(), m.getRegistered(), m.getRestaurant(), m.getDishes());
     }
 
     public Menu(Integer id, String name, LocalDate registered, Restaurant restaurant, Collection<Dish> dishes) {
@@ -60,9 +44,6 @@ public class Menu extends NamedEntity{
         setDishes(dishes);
     }
 
-    public Set<Dish> getDishes() {
-        return dishes;
-    }
 
     public void setDishes(Collection<Dish> dishes) {
         this.dishes = CollectionUtils.isEmpty(dishes) ? Collections.emptySet() : new HashSet<>(dishes);
@@ -76,16 +57,5 @@ public class Menu extends NamedEntity{
         Arrays.asList(dishes).forEach(this.dishes::remove);
     }
 
-    public Menu clearDishes() {
-        dishes.clear();
-        return this;
-    }
 
-    public LocalDate getRegistered() {
-        return registered;
-    }
-
-    public void setRegistered(LocalDate registered) {
-        this.registered = registered;
-    }
 }

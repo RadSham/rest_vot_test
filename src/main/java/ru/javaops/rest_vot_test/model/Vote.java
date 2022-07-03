@@ -1,9 +1,7 @@
 package ru.javaops.rest_vot_test.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -13,6 +11,8 @@ import java.time.LocalDate;
 @Table(name = "vote", uniqueConstraints = {@UniqueConstraint(columnNames = {"date", "user_id"}, name = "vote_date_user_idx")})
 @Getter
 @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString(callSuper = true)
 public class Vote extends BaseEntity{
 
     @Column(name = "date", nullable = false)
@@ -30,16 +30,11 @@ public class Vote extends BaseEntity{
     @NotNull
     private Restaurant restaurant;
 
-    public Vote() {
-    }
 
     public Vote(LocalDate date, User user) {
         this(null, date, user, null);
     }
 
-    public Vote(Vote v) {
-        this(v.getId(), v.getDate(), v.getUser(), v.getRestaurant());
-    }
 
 
     public Vote(Integer id, LocalDate date, User user, Restaurant restaurant) {

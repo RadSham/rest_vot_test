@@ -18,6 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static ru.javaops.rest_vot_test.web.testdata.CommonTD.EXIST_ID;
 import static ru.javaops.rest_vot_test.web.testdata.CommonTD.NOT_FOUND_ID;
 import static ru.javaops.rest_vot_test.web.testdata.RestaurantTD.RESTAURANT_MATCHER;
+import static ru.javaops.rest_vot_test.web.testdata.RestaurantTD.of;
 import static ru.javaops.rest_vot_test.web.testdata.UserTD.ADMIN_MAIL;
 import static ru.javaops.rest_vot_test.web.testdata.UserTD.USER_MAIL;
 
@@ -37,7 +38,7 @@ class AdminRestaurantControllerTest extends BaseControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void createWithLocation() throws Exception {
-        Restaurant nr = new Restaurant(null, "Test Restaurant");
+        Restaurant nr = of("Test Restaurant");
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(nr)))
@@ -52,7 +53,7 @@ class AdminRestaurantControllerTest extends BaseControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void createInvalid() throws Exception {
-        Restaurant invalid = new Restaurant(null, null);
+        Restaurant invalid = new Restaurant(null, null, null);
         perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(invalid)))
@@ -63,7 +64,7 @@ class AdminRestaurantControllerTest extends BaseControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void update() throws Exception {
-        Restaurant updated = new Restaurant(EXIST_ID, "Updatable Restaurant");
+        Restaurant updated = of(EXIST_ID, "Updatable Restaurant");
         perform(MockMvcRequestBuilders.put(REST_URL + EXIST_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(updated)))
@@ -75,7 +76,7 @@ class AdminRestaurantControllerTest extends BaseControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void updateInvalid() throws Exception {
-        Restaurant invalid = new Restaurant(EXIST_ID, "");
+        Restaurant invalid = of(EXIST_ID, "");
         perform(MockMvcRequestBuilders.put(REST_URL + EXIST_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(invalid)))
@@ -86,7 +87,7 @@ class AdminRestaurantControllerTest extends BaseControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void updateHtmlUnsafe() throws Exception {
-        Restaurant updated = new Restaurant(EXIST_ID, "Updatable Restaurant");
+        Restaurant updated = of(EXIST_ID, "Updatable Restaurant");
         updated.setName("<script>alert(123)</script>");
         perform(MockMvcRequestBuilders.put(REST_URL + EXIST_ID)
                 .contentType(MediaType.APPLICATION_JSON)
