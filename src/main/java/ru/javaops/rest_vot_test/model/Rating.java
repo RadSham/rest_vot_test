@@ -6,9 +6,13 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
 public class Rating<T>
 {
-    private T record;
-    private long rating;
+    private T data;
+    private int rating;
+
+    public Rating(T data, long rating) {
+        this.data = data;
+        this.rating = (int) rating;
+    }
 }

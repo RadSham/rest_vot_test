@@ -3,6 +3,8 @@ package ru.javaops.rest_vot_test.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
@@ -23,7 +25,7 @@ public class Menu extends NamedEntity {
 
     @ManyToOne
     @JoinColumn(name = "restaurant_id", nullable = false)
-    //@JsonBackReference
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Restaurant restaurant;
 
     @ManyToMany(fetch = FetchType.EAGER)

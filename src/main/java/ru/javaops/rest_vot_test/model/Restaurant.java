@@ -2,7 +2,6 @@ package ru.javaops.rest_vot_test.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,24 +21,7 @@ import java.util.Set;
 @ToString(callSuper = true)
 public class Restaurant extends NamedEntity {
 
-    @OneToMany(mappedBy = "restaurant")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private List<Menu> menu;
-
-    @OneToMany(mappedBy = "restaurant")
-    @OrderBy("name DESC")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
-    private Set<Dish> dishes;
-
-    @OneToMany(mappedBy = "restaurant")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
-    private List<Vote> votes;
-
-
-    public Restaurant(Integer id, String name, Set<Dish> dishes) {
+    public Restaurant(Integer id, String name) {
         super(id, name);
-        this.dishes = dishes;
     }
 }

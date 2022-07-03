@@ -28,7 +28,7 @@ import ru.javaops.rest_vot_test.to.MenuTo;
 @RequestMapping(value = AdminMenuController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
 public class AdminMenuController extends BaseMenuController {
-    public static final String REST_URL = "/api/admin/menu";
+    public static final String REST_URL = "/api/admin/menus";
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Create new", tags = "menu")

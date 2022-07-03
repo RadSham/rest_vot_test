@@ -45,7 +45,7 @@ public class DishService {
 
     public Dish checkBelong(int id, int restaurantId) {
         return repository.get(id, restaurantId).orElseThrow(
-                () -> new IllegalRequestDataException("Dish id=" + id + " doesn't belong to Restaurant id=" + restaurantId));
+                () -> new IllegalRequestDataException(String.format("Dish [id=%s] doesn't belong to Restaurant [id=%s]", id, restaurantId)));
     }
 
     public void removeAllDishesFromMenu(int restaurantId) {
