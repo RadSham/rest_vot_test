@@ -17,6 +17,7 @@ import ru.javaops.rest_vot_test.util.JsonUtil;
 import ru.javaops.rest_vot_test.web.BaseControllerTest;
 import ru.javaops.rest_vot_test.web.GlobalExceptionHandler;
 import ru.javaops.rest_vot_test.web.controller.VoteController;
+import ru.javaops.rest_vot_test.web.testdata.CommonTD;
 import ru.javaops.rest_vot_test.web.testdata.VoteTD;
 
 import java.util.List;
@@ -38,6 +39,24 @@ class VoteControllerTest extends BaseControllerTest {
     @Autowired
     private VoteRepository repository;
 
+
+    @Test
+    @WithUserDetails(value = USER_MAIL)
+    void get() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL + USER_VOTE_TODAY_ID))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(VOTE_TO_MATCHER.contentJson(userVoteTo10));
+    }
+
+    @Test
+    @WithUserDetails(value = USER_MAIL)
+    void getNotFound() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL + CommonTD.NOT_FOUND_ID))
+                .andDo(print())
+                .andExpect(status().isNotFound());
+    }
 
     @Test
     void getUnauth() throws Exception {
@@ -93,10 +112,10 @@ class VoteControllerTest extends BaseControllerTest {
         @WithUserDetails(value = USER_MAIL)
         void update() throws Exception {
             DateTimeUtil.setClock(voteBorderClock(true));
-            Vote updated = copy(userVote6Today);
-            updated.setRestaurant(restaurantNoma);
+            Vote updated = copy(userVote10Today);
+            updated.setRestaurant(restaurantMirazur);
             perform(MockMvcRequestBuilders.put(REST_URL)
-                    .param("restaurantId", String.valueOf(RESTAURANT_NOMA_ID))).andDo(print())
+                    .param("restaurantId", String.valueOf(RESTAURANT_MIRAZUR_ID)))
                     .andExpect(status().isNoContent());
             VOTE_MATCHER.assertMatch(repository.getById(USER_VOTE_TODAY_ID), updated);
         }

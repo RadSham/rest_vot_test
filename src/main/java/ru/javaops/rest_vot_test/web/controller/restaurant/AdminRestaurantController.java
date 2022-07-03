@@ -31,7 +31,7 @@ public class AdminRestaurantController extends BaseRestaurantController {
         checkNew(restaurant);
         Restaurant created = repository.save(restaurant);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(REST_URL + "/{id}")
+                .path(RestaurantController.REST_URL + "/{id}")
                 .buildAndExpand(created.getId()).toUri();
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
