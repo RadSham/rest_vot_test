@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -40,12 +41,14 @@ public class AdminUserController extends BaseUserController {
     @Override
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @CacheEvict(value = "users", allEntries = true)
     @Operation(summary = "Delete by id", tags = "users")
     public void delete(@PathVariable int id) {
         super.delete(id);
     }
 
     @GetMapping
+    @Cacheable("users")
     @Operation(summary = "Get all", tags = "users")
     public List<User> getAll() {
         log.info("getAll");
@@ -54,6 +57,7 @@ public class AdminUserController extends BaseUserController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Create new", tags = "users")
+    @CachePut(value = "users", key = "#user.email")
     public ResponseEntity<User> createWithLocation(@Valid @RequestBody User user) {
         log.info("create {}", user);
         checkNew(user);
@@ -66,6 +70,7 @@ public class AdminUserController extends BaseUserController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @CachePut(value = "users", key = "#user.email")
     @Operation(summary = "Update", tags = "users")
     public void update(@PathVariable int id, @Valid @RequestBody User user) {
         log.info("update {} with id={}", user, id);
@@ -83,6 +88,7 @@ public class AdminUserController extends BaseUserController {
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Transactional
+    @CacheEvict(value = "users", allEntries = true)
     @Operation(summary = "Enable/disable", tags = "users")
     public void enable(@PathVariable int id, @RequestParam boolean enabled) {
         log.info(enabled ? "enable {}" : "disable {}", id);
