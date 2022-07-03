@@ -29,12 +29,13 @@ import static ru.javaops.rest_vot_test.util.validation.ValidationUtil.checkNew;
 @RestController
 @RequestMapping(value = RegularUserController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
+@CacheConfig(cacheNames = "users")
 // TODO: cache only most requested data!
 public class RegularUserController extends BaseUserController {
     static final String REST_URL = "/api/profile";
 
     @GetMapping
-    @Cacheable("users")
+    @Cacheable
     @Operation(summary = "Get authorized user data", tags = "account")
     public User get(@AuthenticationPrincipal AuthUser authUser) {
         log.info("get auth user {}", authUser.id());
@@ -43,7 +44,7 @@ public class RegularUserController extends BaseUserController {
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @CacheEvict(value = "users", key = "#authUser.username")
+    @CacheEvict(key = "#authUser.username")
     @Operation(summary = "Delete yourself", tags = "account")
     public void delete(@AuthenticationPrincipal AuthUser authUser) {
         log.info("delete {}", authUser.id());
@@ -52,7 +53,7 @@ public class RegularUserController extends BaseUserController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    @CachePut(value = "users", key = "#userTo.email")
+    @CachePut(key = "#userTo.email")
     @Operation(summary = "Register yourself", tags = "account")
     public ResponseEntity<User> register(@Valid @RequestBody UserTo userTo) {
         log.info("register {}", userTo);
@@ -67,7 +68,7 @@ public class RegularUserController extends BaseUserController {
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Transactional
-    @CachePut(value = "users", key = "#authUser.username")
+    @CachePut(key = "#authUser.username")
     @Operation(summary = "Update authorized user data", tags = "account")
     public void update(@AuthenticationPrincipal AuthUser authUser, @RequestBody @Valid UserTo userTo) {
         log.info("update {} with id={}", userTo, authUser.id());
